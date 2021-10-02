@@ -1,0 +1,5 @@
+cachetools==4.2.4
+d20==1.1.2
+lark-parser==0.9.0
+pdfrw==0.4
+PyPDF2==1.26.0
