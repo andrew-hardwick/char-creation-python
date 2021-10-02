@@ -7,29 +7,13 @@ import pdfrw
 
 from PyPDF2 import PdfFileMerger
 
+from constants import *
+
 
 csTemplate = 'template.pdf'
 csOutput = 'characterSheet.pdf'
 
 statRoll = '3d6'
-classOptions = ['cleric', 'dwarf', 'elf', 'fighter', 'halfling', 'magic user', 'thief']
-classReqs = {'dwarf': {'CON': 9}, 'elf': {'INT': 9}, 'halfling': {'CON': 9, 'DEX': 9}}
-standardBonus = { 3 : -3, 4 : -2, 5 : -2, 6 : -1, 7 : -1, 8 : -1, 9 : 0, 10 : 0, 11 : 0, 12 : 0, 13 : 1, 14 : 1, 15 : 1, 16 : 2, 17 : 2, 18 : 3 }
-alternativeBonus = { 3 : -2, 4 : -1, 5 : -1, 6 : -1, 7 : -1, 8 : -1, 9 : 0, 10 : 0, 11 : 0, 12 : 0, 13 : 1, 14 : 1, 15 : 1, 16 : 1, 17 : 1, 18 : 2 }
-strOpenDoors = { 3 : 1, 4 : 1, 5 : 1, 6 : 1, 7 : 1, 8 : 1, 9 : 2, 10 : 2, 11 : 2, 12 : 2, 13 : 3, 14 : 3, 15 : 3, 16 : 4, 17 : 4, 18 : 5}
-intLanguages = { 3 : 'broken speech', 4 : 'Native', 5 : 'Native', 6 : 'Native', 7 : 'Native', 8 : 'Native', 9 : 'Native', 10 : 'Native', 11 : 'Native', 12 : 'Native', 13 : 'Native + 1 Additional', 14 : 'Native + 1 Additional', 15 : 'Native + 1 Additional', 16 : 'Native + 2 Additional', 17 : 'Native + 2 Additional', 18 : 'Native + 3 Additional' }
-intLiteracy = { 3 : False, 4 : False, 5 : False, 6 : True, 7 : True, 8 : True, 9 : True, 10 : True, 11 : True, 12 : True, 13 : True, 14 : True, 15 : True, 16 : True, 17 : True, 18 : True }
-savingThrows = { 'cleric' : [ 11, 12, 14, 16, 15 ], 'dwarf' : [ 8, 9, 10, 13, 12 ], 'elf' : [ 12, 13, 13, 15, 15 ], 'fighter' : [ 12, 13, 14, 15, 16 ], 'halfling' : [ 8, 9, 10, 13, 12 ], 'magic user' : [ 13, 14, 13, 16, 15 ], 'thief' : [ 13, 14, 13, 16, 15 ], }
-classHd = { 'cleric' : '1d6', 'dwarf' : '1d8', 'elf' : '1d6', 'fighter' : '1d8', 'halfling' : '1d6', 'magic user' : '1d4', 'thief' : '1d4', }
-alignmentOptions = ['Lawful', 'Neutral']
-classArmorOptions = { 'cleric' : [ 'Unarmoured', 'Leather', 'Chainmail' ], 'dwarf' : [ 'Unarmoured', 'Leather', 'Chainmail' ], 'elf' : [ 'Unarmoured', 'Leather', 'Chainmail' ], 'fighter' : [ 'Unarmoured', 'Leather', 'Chainmail' ], 'halfling' : [ 'Unarmoured', 'Leather', 'Chainmail' ], 'magic user' : [ 'Unarmoured' ], 'thief' : [ 'Unarmoured', 'Leather' ] }
-classShield = { 'cleric' : True, 'dwarf' : True, 'elf' : True, 'fighter' : True, 'halfling' : True, 'magic user' : False, 'thief' : False }
-armorclass = { 'Unarmoured': 9, 'Leather' : 7, 'Chainmail' : 5 }
-armorBaseMove = { 'Unarmoured': 120, 'Leather' : 90, 'Chainmail' : 60 }
-classListen = { 'cleric' : 1, 'dwarf' : 2, 'elf' : 2, 'fighter' : 1, 'halfling' : 2, 'magic user' : 1, 'thief' : 1 }
-classSecretDoor = { 'cleric' : 1, 'dwarf' : 1, 'elf' : 2, 'fighter' : 1, 'halfling' : 1, 'magic user' : 1, 'thief' : 1 }
-classRoomTrap = { 'cleric' : 1, 'dwarf' : 2, 'elf' : 1, 'fighter' : 1, 'halfling' : 1, 'magic user' : 1, 'thief' : 1 }
-classXpToLevel = { 'cleric' : 1500, 'dwarf' : 2200, 'elf' : 4000, 'fighter' : 2000, 'halfling' : 2000, 'magic user' : 2500, 'thief' : 1200 }
 
 def baseStats(character):
     character['Level'] = 1
@@ -37,36 +21,47 @@ def baseStats(character):
     character['XP'] = 0
 
 def chooseClass(character):
-    character['Character Class'] = classOptions[d20.roll('d7').total - 1]
-    character['Listen at Door'] = classListen[character['Character Class']]
-    character['Find Secret Door'] = classSecretDoor[character['Character Class']]
-    character['Find Room Trap'] = classRoomTrap[character['Character Class']]
-    character['XP for Next Level'] = classXpToLevel[character['Character Class']]
+    character['class'] = CLASS_OPTIONS[d20.roll('d7').total - 1]
+    character['Listen at Door'] = CLASS_LISTEN[character['class']]
+    character['Find Secret Door'] = CLASS_SECRET_DOOR[character['class']]
+    character['Find Room Trap'] = CLASS_ROOM_TRAP[character['class']]
+    character['XP for Next Level'] = CLASS_XP_TO_LEVEL[character['class']]
+    character['Character Class'] = CLASS_DISPLAY[character['class']]
 
 def chooseArmor(character):
-    availableArmor = classArmorOptions[character['Character Class']]
+    availableArmor = CLASS_ARMOR_OPTIONS[character['class']]
 
     roll = '1d' + str(len(availableArmor))
 
     character['armor'] = availableArmor[d20.roll(roll).total - 1]
 
     character['Weapons and Armour'] = character['armor'] + '\n'
-    character['AC'] = armorclass[character['armor']] + character['DEX AC Mod']
+    character['AC'] = ARMOR_CLASS[character['armor']] + character['DEX AC Mod']
     
-    if classShield[character['Character Class']]:
+    character['hasShield'] = False
+
+    if CLASS_SHIELD[character['class']]:
         if d20.roll('1d2').total == 1:
             character['Weapons and Armour'] += 'Shield\n'
             character['AC'] = character['AC'] - 1
+            character['hasShield'] = True
 
-    character['Exporation Movement'] = armorBaseMove[character['armor']]
-    character['Overland Movement'] = int(armorBaseMove[character['armor']] / 5)
-    character['Encounter Movement'] = int(armorBaseMove[character['armor']] / 3)
+    character['Exporation Movement'] = ARMOR_BASE_MOVE[character['armor']]
+    character['Overland Movement'] = int(ARMOR_BASE_MOVE[character['armor']] / 5)
+    character['Encounter Movement'] = int(ARMOR_BASE_MOVE[character['armor']] / 3)
+
+def chooseWeapon(character):
+    availableWeapons = CLASS_WEAPONS[character['class']][character['hasShield']]
+
+    selected = availableWeapons[d20.roll('1d' + str(len(availableWeapons))).total - 1]
+
+    character['Weapons and Armour'] += selected + ' (' + WEAPON_DAMAGE[selected] + ')\n'
 
 def statsValidForClass(character):
-    if character['Character Class'] not in classReqs.keys():
+    if character['class'] not in CLASS_REQS.keys():
         return True
     else:
-        reqs = classReqs[character['Character Class']]
+        reqs = CLASS_REQS[character['class']]
 
         result = True
 
@@ -90,17 +85,17 @@ def rollStats(character):
     character['CHA'] = d20.roll(statRoll).total
 
 def noteMods(character):
-    character['STR Melee Mod'] = standardBonus[character['STR']]
-    character['Open Stuck Door'] = strOpenDoors[character['STR']]
-    character['Languages'] = intLanguages[character['INT']]
-    character['Literacy'] = intLiteracy[character['INT']]
-    character['DEX AC Mod'] = -standardBonus[character['DEX']]
+    character['STR Melee Mod'] = STANDARD_BONUS[character['STR']]
+    character['Open Stuck Door'] = STR_OPEN_DOORS[character['STR']]
+    character['Languages'] = INT_LANGUAGES[character['INT']]
+    character['Literacy'] = INT_LITERACY[character['INT']]
+    character['DEX AC Mod'] = -STANDARD_BONUS[character['DEX']]
     character['Unarmoured AC'] = 9 + character['DEX AC Mod']
-    character['Dex Missile Mod'] = standardBonus[character['DEX']]
-    character['Initiative DEX Mod'] = alternativeBonus[character['DEX']]
-    character['Reactions CHA Mod'] = alternativeBonus[character['CHA']]
-    character['Magic Save Mod'] = standardBonus[character['WIS']]
-    character['CON HP Mod'] = standardBonus[character['CON']]
+    character['Dex Missile Mod'] = STANDARD_BONUS[character['DEX']]
+    character['Initiative DEX Mod'] = ALTERNATIVE_BONUS[character['DEX']]
+    character['Reactions CHA Mod'] = ALTERNATIVE_BONUS[character['CHA']]
+    character['Magic Save Mod'] = STANDARD_BONUS[character['WIS']]
+    character['CON HP Mod'] = STANDARD_BONUS[character['CON']]
 
 def determineAttack(character):
     character['THAC0'] = 19
@@ -115,15 +110,15 @@ def determineAttack(character):
     character['THAC9'] = 10
 
 def noteSavingThrows(character):
-    character['savingThrows'] = savingThrows[character['Character Class']]
-    character['Death Save'] = character['savingThrows'][0]
-    character['Wands Save'] = character['savingThrows'][1]
-    character['Paralysis Save'] = character['savingThrows'][2]
-    character['Breath Save'] = character['savingThrows'][3]
-    character['Spells Save'] = character['savingThrows'][4]
+    character['SAVING_THROWS'] = SAVING_THROWS[character['class']]
+    character['Death Save'] = character['SAVING_THROWS'][0]
+    character['Wands Save'] = character['SAVING_THROWS'][1]
+    character['Paralysis Save'] = character['SAVING_THROWS'][2]
+    character['Breath Save'] = character['SAVING_THROWS'][3]
+    character['Spells Save'] = character['SAVING_THROWS'][4]
 
 def rollHp(character):
-    character['Max HP'] = d20.roll(classHd[character['Character Class']]).total + character['CON HP Mod']
+    character['Max HP'] = d20.roll(CLASS_HD[character['class']]).total + character['CON HP Mod']
 
     if character['Max HP'] < 1:
         character['Max HP'] = 1
@@ -131,7 +126,7 @@ def rollHp(character):
     character['HP'] = character['Max HP']
 
 def chooseAlignment(character):
-    character['Alignment'] = alignmentOptions[d20.roll('1d2').total - 1]
+    character['Alignment'] = ALIGNMENT_OPTIONS[d20.roll('1d2').total - 1]
 
 def rollGold(character):
     character['GP'] = d20.roll('3d6').total
@@ -179,6 +174,7 @@ def createAndSaveCharacter(postfix):
     chooseAlignment(character)
     rollGold(character)
     chooseArmor(character)
+    chooseWeapon(character)
 
     return fillPdfAndOutput(character, postfix)
 
