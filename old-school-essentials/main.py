@@ -1,11 +1,13 @@
 # main.py
 
 import os
+import contextlib
 
 import d20
 import pdfrw
 
 from PyPDF2 import PdfFileMerger
+from fillpdf import fillpdfs
 
 from constants import *
 
@@ -157,10 +159,15 @@ def fillPdfAndOutput(character, postfix):
     template_pdf.Root.AcroForm.update(pdfrw.PdfDict(NeedAppearances=pdfrw.PdfObject('true')))
 
     csOutput = 'cs' + str(postfix) + '.pdf'
+    csOutputFlat = 'cs' + str(postfix) + 'f.pdf'
 
     pdfrw.PdfWriter().write(csOutput, template_pdf)
 
-    return csOutput
+    fillpdfs.flatten_pdf(csOutput, csOutputFlat)
+
+    os.remove(csOutput)
+
+    return csOutputFlat
 
 def createAndSaveCharacter(postfix):
     character = {}
@@ -183,15 +190,26 @@ def main():
     for i in range(10):
         files.append(createAndSaveCharacter(i))
 
+    os.remove('merged.pdf')
+
     merger = PdfFileMerger()
 
-    for file in files:
-        merger.append(file)
+    with contextlib.ExitStack() as stack:
+        files = [stack.enter_context(open(pdf, 'rb')) for pdf in files]
+        for f in files:
+            merger.append(f)
+        with open('merged.pdf', 'wb') as f:
+            merger.write(f)
 
-    merger.write('characters.pdf')
-    merger.close()
+    #merger = PdfFileMerger()
 
-    for file in files:
-        os.remove(file)
+    #for file in files:
+    #    merger.append(file)
+
+    #merger.write('characters.pdf')
+    #merger.close()
+
+    #for file in files:
+    #    os.remove(file)
 
 main()
