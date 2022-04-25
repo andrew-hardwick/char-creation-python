@@ -1,62 +1,69 @@
 Name & Title
 Player Name
 Class & Level  {{ d.display_class }}/1
+Occupation     {{ d.occupation }}
 Alignment      {{ d.Alignment }}
-XP (+##%)      0/{{ d.xp_to_level}}
+XP ({{ '{:>2}'.format(d.bonus_xp) }}%)      0/{{ d.xp_to_level}}
 Languages      {{ d.Languages }}
+
 ============================================================================
 Ability     Score  Bonus  Affects...
+
 Strength      {{ '{:>2}'.format(d.STR) }}    {{ '{:>2}'.format(d.str_melee_mod) }}    THAC0 (Melee), damage (melee, thrown), Open Doors
 Intelligence  {{ '{:>2}'.format(d.INT) }}
 Wisdom        {{ '{:>2}'.format(d.WIS) }}    {{ '{:>2}'.format(d.magic_save_mod) }}    Saving throws vs. spells
 Dexterity     {{ '{:>2}'.format(d.DEX) }}    {{ '{:>2}'.format(d.dex_ac_mod) }}    AC, THAC0 (Missile/thrown)
 Constitution  {{ '{:>2}'.format(d.CON) }}    {{ '{:>2}'.format(d.con_hp_mod) }}    Hit Points
 Charisma      {{ '{:>2}'.format(d.CHA) }}    {{ '{:>2}'.format(d.reactions_cha_mod) }}    NPC reactions, hiring retainers
+
 ============================================================================
 COMBAT
 
+Initiative     {{ d.initiative_mod }}
+THAC0          19
+
 Armor Class    {{ d.AC }}
 Hit Points     {{ d.HP }}/{{ d.HP }} ({{ d.HD }})
-Movement Rate  {{ d.exp_movement }}
-THAC0          19
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+============================================================================
+MOVEMENT
+
+Exploration: {{ d.exploration_speed }} feet/turn
+Overland: {{ d.overland_speed }} miles/day
+Encounter: {{ d.encounter_speed }} feet/round
+
+============================================================================
 SAVING THROWS
+
 Death Ray or Poison         {{ '{:>2}'.format(d.Death_Save) }}
 Magic Wands                 {{ '{:>2}'.format(d.Wands_Save) }}
 Paralysis or Turn to Stone  {{ '{:>2}'.format(d.Paralysis_Save) }}
 Dragon Breath               {{ '{:>2}'.format(d.Breath_Save) }}
 Rods, Staves, or Spells *   {{ '{:>2}'.format(d.Spells_Save) }}
   * Include Wis bonus vs. Spells
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+============================================================================
 ATTACKS
-Weapon/Attack    #AT  THAC0  Damage  Special
-{{ '{:<16}'.format(d.weapon) }}   1  {{ '{:>5}'.format(d.THAC0) }}  {{ '{:>6}'.format(d.damage) }}
+
+Weapon/Attack                #AT  THAC0  Damage  Special
+{{ '{:<28}'.format(d.weapon) }}   1  {{ '{:>5}'.format(d.THAC0) }}  {{ '{:>6}'.format(d.damage) }}
+
 ============================================================================
 SPECIAL ABILITIES
-Vision:
 
-
-
-
-
-
-
+Listen at Door: {{ d.listen_doors }} in 6
+Open Stuck Doors: {{ d.open_doors }} in 6
+Find Secret Door: {{ d.find_secret_doors }} in 6
+Find Room Trap: {{ d.find_room_trap }} in 6
 
 ============================================================================
 EQUIPMENT
-Item               Wt  Notes
 
+{{ d.equipment }}
 
-
-
-
-
-
-
-
-TOTAL ENCUMBRANCE:
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+============================================================================
 VALUABLES
+
 Platinum Pieces (PP): 0
 Gold Pieces     (GP): {{ d.GP }}
 Electrum Pieces (EP): 0

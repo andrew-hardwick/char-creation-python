@@ -1,0 +1,119 @@
+[
+	{
+		"name":"Basic Package",
+		"item_list":
+		[
+			"Simple Rucksack",
+			"5 Torches",
+			"Tinderbox",
+			"1 Jug of Ale",
+			"1 Week of Rations",
+			"Large sack"
+		],
+		"cost":20
+	},
+	{
+		"name":"Deluxe Package",
+		"item_list":
+		[
+			"Backpack",
+			"Lantern",
+			"3 Flasks of Oil",
+			"Tinderbox",
+			"Wineskin, local vintage",
+			"1 Week of Iron Rations",
+			"50’ of Rope",
+			"Large Sack",
+			"Crowbar"
+		],
+		"cost":60
+	},
+	{
+		"name":"Deluxe Package",
+		"item_list":
+		[
+			"Backpack",
+			"Lantern",
+			"3 Flasks of Oil",
+			"Tinderbox",
+			"Wineskin, local vintage",
+			"1 Week of Iron Rations",
+			"50’ of Rope",
+			"Large Sack",
+			"Hammer &amp; 12 Iron Spikes"
+		],
+		"cost":60
+	},
+	{
+		"name":"Specialists' Package",
+		"item_list":
+		[
+			"Backpack",
+			"5 torches",
+			"Tinderbox",
+			"Wineskin, local vintage",
+			"1 Week of Iron Rations",
+			"Paper, Ink, Pens"
+		],
+		"cost":45
+	},
+	{
+		"name":"Vampire Hunter's Kit",
+		"item_list":
+		[
+			"Small Sack",
+			"Wooden Crucifix",
+			"Vial of Holy Water",
+			"3 Bulbs of fine Garlic",
+			"Mallet &amp; 3 Stakes",
+			"Silver Dagger"
+		],
+		"cost":75
+	},
+	{
+		"name":"Basic Package",
+		"item_list":
+		[
+			"Backpack",
+			"Large Sack",
+			"Lantern",
+			"2 Flasks of Oil",
+			"Tinderbox",
+			"12 Iron Spikes",
+			"Small Hammer",
+			"Waterskin",
+			"1 Week of Rations"
+		],
+		"cost":38
+	},
+	{
+		"name":"Basic Package",
+		"item_list":
+		[
+			"Backpack",
+			"2 Large Sacks",
+			"6 Torches",
+			"3 Flasks of Oil",
+			"Tinderbox",
+			"10 Foot Pole",
+			"50 Feet of Rope",
+			"Waterskin",
+			"1 Week of Rations",
+			"Mirror"
+		],
+		"cost":32
+	},
+	{
+		"name":"Basic Package",
+		"item_list":
+		[
+			"Backpack",
+			"4 Small Sacks",
+			"12 Iron Spikes",
+			"50 Feet of Rope",
+			"Waterskin",
+			"1 Week of Rations"
+		],
+		"cost":22
+	}
+]
